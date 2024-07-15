@@ -53,11 +53,11 @@ var sendFileByUrl = methods.SendFileByUrl{
 	Caption:  "Лошадка",
 }
 
-func getSettingsHandler(server string, g methods.GetSettings) int {
+func getSettingsHandler(host string, server string, idInstance string, apiTokenInstance string, g methods.GetSettings) int {
 	getSettingsMarshall, _ := json.Marshal(g)
 	u := bytes.NewReader(getSettingsMarshall)
 
-	req, err := http.NewRequest("GET", server+"/getSettings", u)
+	req, err := http.NewRequest("GET", host+server+fmt.Sprintf("/waInstance%v/getSettings/%v", idInstance, apiTokenInstance), u)
 	if err != nil {
 		fmt.Println("Error in req: ", err)
 		return http.StatusInternalServerError
@@ -85,11 +85,11 @@ func getSettingsHandler(server string, g methods.GetSettings) int {
 	return resp.StatusCode
 }
 
-func getStateInstanceHangler(server string, g methods.GetStateInstance) int {
+func getStateInstanceHangler(host string, server string, idInstance string, apiTokenInstance string, g methods.GetStateInstance) int {
 	getStateInstanceMarshall, _ := json.Marshal(g)
 	u := bytes.NewReader(getStateInstanceMarshall)
 
-	req, err := http.NewRequest("GET", server+"/getStateInstance", u)
+	req, err := http.NewRequest("GET", host+server+fmt.Sprintf("/waInstance%v/getStateInstance/%v", idInstance, apiTokenInstance), u)
 	if err != nil {
 		fmt.Println("Error in req: ", err)
 		return http.StatusInternalServerError
@@ -117,11 +117,11 @@ func getStateInstanceHangler(server string, g methods.GetStateInstance) int {
 	return resp.StatusCode
 }
 
-func sendMessageHandler(server string, s methods.SendMessage) int {
+func sendMessageHandler(host string, server string, idInstance string, apiTokenInstance string, s methods.SendMessage) int {
 	sendMessageMarshall, _ := json.Marshal(s)
 	u := bytes.NewReader(sendMessageMarshall)
 
-	req, err := http.NewRequest("POST", server+"/sendMessage", u)
+	req, err := http.NewRequest("POST", host+server+fmt.Sprintf("/waInstance%v/sendMessage/%v", idInstance, apiTokenInstance), u)
 	if err != nil {
 		fmt.Println("Error in req: ", err)
 		return http.StatusInternalServerError
@@ -142,11 +142,11 @@ func sendMessageHandler(server string, s methods.SendMessage) int {
 	return resp.StatusCode
 }
 
-func sendFileByUrlHandler(server string, s methods.SendFileByUrl) int {
+func sendFileByUrlHandler(host string, server string, idInstance string, apiTokenInstance string, s methods.SendFileByUrl) int {
 	sendFileByUrlMarshall, _ := json.Marshal(s)
 	u := bytes.NewReader(sendFileByUrlMarshall)
 
-	req, err := http.NewRequest("POST", server+"/sendFileByUrl", u)
+	req, err := http.NewRequest("POST", host+server+fmt.Sprintf("/waInstance%v/sendFileByUrl/%v", idInstance, apiTokenInstance), u)
 	if err != nil {
 		fmt.Println("Error in req: ", err)
 		return http.StatusInternalServerError
@@ -168,6 +168,7 @@ func sendFileByUrlHandler(server string, s methods.SendFileByUrl) int {
 }
 
 func main() {
+	host := "http://localhost"
 	if len(os.Args) != 2 {
 		fmt.Println("Wrong number of arguments!")
 		fmt.Println("Need: Server")
@@ -175,20 +176,20 @@ func main() {
 	}
 	server := os.Args[1]
 
-	resp := getSettingsHandler("http://localhost"+server, getSettings)
+	resp := getSettingsHandler(host, server, "1234567890", "A123p456I789", getSettings)
 	fmt.Println("/getSettings return code:", resp)
 
-	resp = getStateInstanceHangler("http://localhost"+server, getStateInstance)
+	resp = getStateInstanceHangler(host, server, "1234567890", "A123p456I789", getStateInstance)
 	fmt.Println("/getStateInstance return code:", resp)
 
-	resp = sendMessageHandler("http://localhost"+server, sendMessage)
+	resp = sendMessageHandler(host, server, "1234567890", "A123p456I789", sendMessage)
 	if resp != http.StatusOK {
 		fmt.Println("Err code:", resp)
 	} else {
 		fmt.Println("Data returns", sendMessage, "StatusCode", resp)
 	}
 
-	resp = sendFileByUrlHandler("http://localhost"+server, sendFileByUrl)
+	resp = sendFileByUrlHandler(host, server, "1234567890", "A123p456I789", sendFileByUrl)
 	if resp != http.StatusOK {
 		fmt.Println("Err code:", resp)
 	} else {

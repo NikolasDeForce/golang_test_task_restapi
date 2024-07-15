@@ -15,6 +15,7 @@ var sendMessage = methods.SendMessage{}
 var sendFileByUrl = methods.SendFileByUrl{}
 
 func GetSettingsHandler(w http.ResponseWriter, r *http.Request) {
+	log.Println("Serving:", r.URL.Path, "from", r.Host, r.Method)
 	if r.Method != http.MethodGet {
 		http.Error(w, "Error:", http.StatusMethodNotAllowed)
 		fmt.Fprintf(w, "%s\n", "Method not allowed!")
@@ -39,6 +40,7 @@ func GetSettingsHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetStateInstanceHandler(w http.ResponseWriter, r *http.Request) {
+	log.Println("Serving:", r.URL.Path, "from", r.Host, r.Method)
 	if r.Method != http.MethodGet {
 		http.Error(w, "Error:", http.StatusMethodNotAllowed)
 		fmt.Fprintf(w, "%s\n", "Method not allowed!")
@@ -63,6 +65,7 @@ func GetStateInstanceHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func SendMessageHandler(w http.ResponseWriter, r *http.Request) {
+	log.Println("Serving:", r.URL.Path, "from", r.Host, r.Method)
 	if r.Method != http.MethodPost {
 		http.Error(w, "Error:", http.StatusMethodNotAllowed)
 		fmt.Fprintf(w, "%s\n", "Method not allowed!")
@@ -87,6 +90,7 @@ func SendMessageHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func SendFileByUrlHandler(w http.ResponseWriter, r *http.Request) {
+	log.Println("Serving:", r.URL.Path, "from", r.Host, r.Method)
 	if r.Method != http.MethodPost {
 		http.Error(w, "Error:", http.StatusMethodNotAllowed)
 		fmt.Fprintf(w, "%s\n", "Method not allowed!")

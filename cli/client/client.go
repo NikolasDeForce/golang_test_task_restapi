@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-var getSettings = methods.GetSettings{
+var GetSettings = methods.GetSettings{
 	Wid:                               "11001234567@c.us",
 	CountryInstance:                   "",
 	TypeAccount:                       "",
@@ -35,25 +35,25 @@ var getSettings = methods.GetSettings{
 	IncomingCallWebhook:               "yes",
 }
 
-var getStateInstance = methods.GetStateInstance{
+var GetStateInstance = methods.GetStateInstance{
 	StateInstance: "authorized",
 }
 
-var sendMessage = methods.SendMessage{
+var SendMessage = methods.SendMessage{
 	ChatId:          "11001234567@c.us",
 	Message:         "Hello from Russia",
 	QuotedMessageId: "",
 	LinkPreview:     false,
 }
 
-var sendFileByUrl = methods.SendFileByUrl{
+var SendFileByUrl = methods.SendFileByUrl{
 	ChatId:   "11001234567@c.us",
 	UrlFile:  "https://my.site.com/img/horse.png",
 	FileName: "horse.png",
 	Caption:  "Лошадка",
 }
 
-func getSettingsHandler(host string, server string, idInstance string, apiTokenInstance string, g methods.GetSettings) int {
+func GetSettingsHandler(host string, server string, idInstance string, apiTokenInstance string, g methods.GetSettings) int {
 	getSettingsMarshall, _ := json.Marshal(g)
 	u := bytes.NewReader(getSettingsMarshall)
 
@@ -85,7 +85,7 @@ func getSettingsHandler(host string, server string, idInstance string, apiTokenI
 	return resp.StatusCode
 }
 
-func getStateInstanceHangler(host string, server string, idInstance string, apiTokenInstance string, g methods.GetStateInstance) int {
+func GetStateInstanceHangler(host string, server string, idInstance string, apiTokenInstance string, g methods.GetStateInstance) int {
 	getStateInstanceMarshall, _ := json.Marshal(g)
 	u := bytes.NewReader(getStateInstanceMarshall)
 
@@ -117,7 +117,7 @@ func getStateInstanceHangler(host string, server string, idInstance string, apiT
 	return resp.StatusCode
 }
 
-func sendMessageHandler(host string, server string, idInstance string, apiTokenInstance string, s methods.SendMessage) int {
+func SendMessageHandler(host string, server string, idInstance string, apiTokenInstance string, s methods.SendMessage) int {
 	sendMessageMarshall, _ := json.Marshal(s)
 	u := bytes.NewReader(sendMessageMarshall)
 
@@ -142,7 +142,7 @@ func sendMessageHandler(host string, server string, idInstance string, apiTokenI
 	return resp.StatusCode
 }
 
-func sendFileByUrlHandler(host string, server string, idInstance string, apiTokenInstance string, s methods.SendFileByUrl) int {
+func SendFileByUrlHandler(host string, server string, idInstance string, apiTokenInstance string, s methods.SendFileByUrl) int {
 	sendFileByUrlMarshall, _ := json.Marshal(s)
 	u := bytes.NewReader(sendFileByUrlMarshall)
 
@@ -176,23 +176,23 @@ func main() {
 	}
 	server := os.Args[1]
 
-	resp := getSettingsHandler(host, server, "1234567890", "A123p456I789", getSettings)
+	resp := GetSettingsHandler(host, server, "1234567890", "A123p456I789", GetSettings)
 	fmt.Println("/getSettings return code:", resp)
 
-	resp = getStateInstanceHangler(host, server, "1234567890", "A123p456I789", getStateInstance)
+	resp = GetStateInstanceHangler(host, server, "1234567890", "A123p456I789", GetStateInstance)
 	fmt.Println("/getStateInstance return code:", resp)
 
-	resp = sendMessageHandler(host, server, "1234567890", "A123p456I789", sendMessage)
+	resp = SendMessageHandler(host, server, "1234567890", "A123p456I789", SendMessage)
 	if resp != http.StatusOK {
 		fmt.Println("Err code:", resp)
 	} else {
-		fmt.Println("Data returns", sendMessage, "StatusCode", resp)
+		fmt.Println("Data returns", SendMessage, "StatusCode", resp)
 	}
 
-	resp = sendFileByUrlHandler(host, server, "1234567890", "A123p456I789", sendFileByUrl)
+	resp = SendFileByUrlHandler(host, server, "1234567890", "A123p456I789", SendFileByUrl)
 	if resp != http.StatusOK {
 		fmt.Println("Err code:", resp)
 	} else {
-		fmt.Println("Data returns", sendFileByUrl, "StatusCode", resp)
+		fmt.Println("Data returns", SendFileByUrl, "StatusCode", resp)
 	}
 }
